@@ -1,13 +1,22 @@
 // From http://wiki.script.aculo.us/scriptaculous/show/Cookie
 var Cookie = {
-  set: function(name, value, daysToExpire) {
+  set: function(name, value, daysToExpire, domain) {
     var expire = '';
     if(!daysToExpire) daysToExpire = 365;
     var d = new Date();
     d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));
     expire = 'expires=' + d.toGMTString();
-    var path = "path=/"
-    var cookieValue = escape(name) + '=' + escape(value || '') + '; ' + path + '; ' + expire + ';';
+    var path = "path=/";
+    if (domain === undefined) {
+      if (Cookie.defaultDomain === undefined) {
+        domain = "";
+      } else {
+        domain = "domain=" + Cookie.defaultDomain +"; ";
+      }
+    } else {
+      domain = "domain=" + domain + "; ";
+    }
+    var cookieValue = escape(name) + '=' + escape(value || '') + '; ' + path + '; ' + expire + ';' + domain;
     return document.cookie = cookieValue;
   },
   get: function(name) {
