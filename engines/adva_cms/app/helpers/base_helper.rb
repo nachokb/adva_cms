@@ -19,20 +19,14 @@ module BaseHelper
     concat lines.join("\n")
   end
 
-  def todays_short_date
-    Time.zone.now.to_ordinalized_s(:stub)
-  end
-
-  def yesterdays_short_date
-    Time.zone.now.yesterday.to_ordinalized_s(:stub)
-  end
-
   def datetime_with_microformat(datetime, options={})
     return datetime unless datetime.respond_to?(:strftime)
     options.symbolize_keys!
-    options[:format] ||= :standard
+    options[:format] ||= :default
+    options[:type]   ||= :time
     # yuck ... use the localized_dates plugin as soon as we're on Rails 2.2?
-    formatted_datetime = options[:format].is_a?(Symbol) ? datetime.clone.in_time_zone.to_s(options[:format]) : datetime.clone.in_time_zone.strftime(options[:format])
+    # formatted_datetime = options[:format].is_a?(Symbol) ? datetime.clone.in_time_zone.to_s(options[:format]) : datetime.clone.in_time_zone.strftime(options[:format])
+    formatted_datetime = l(datetime.in_time_zone.send(options[:type].to_sym == :time ? :to_time : :to_date), :format => options[:format])
 
     %{<abbr class="datetime" title="#{datetime.utc.xmlschema}">#{formatted_datetime}</abbr>}
   end

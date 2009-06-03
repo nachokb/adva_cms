@@ -1,8 +1,9 @@
 ActionController::Dispatcher.to_prepare do
   Site.class_eval do
-    def has_tracking_enabled?
-      !google_analytics_tracking_code.blank?
+    def tracking_enabled?
+      google_analytics_tracking_code.present?
     end
+    alias :has_tracking_enabled? :tracking_enabled?
   end
 end
 
