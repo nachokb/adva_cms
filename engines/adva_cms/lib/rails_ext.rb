@@ -1,3 +1,4 @@
+require 'rails_ext/action_controller/cookie_defaults'
 require 'rails_ext/action_controller/cacheable_flash'
 require 'rails_ext/action_controller/default_params'
 require 'rails_ext/action_controller/event_helper'
